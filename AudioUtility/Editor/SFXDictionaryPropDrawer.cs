@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
 
-[CustomPropertyDrawer(typeof(SFXLibrary))]
-public class SFXLibraryPropDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(SFXDictionary))]
+public class SFXDictionaryPropDrawer : PropertyDrawer
 {
-    protected SFXLibrary script;
+    protected SFXDictionary script;
     protected static bool foldoutState = false;
     protected float maxWindowSize = 100f;
     const float minWindowSize = 16f;
 
     public override void OnGUI(Rect pos, SerializedProperty prop, GUIContent label)
     {
-        script = (SFXLibrary)fieldInfo.GetValue(prop.serializedObject.targetObject);
+        script = (SFXDictionary)fieldInfo.GetValue(prop.serializedObject.targetObject);
 
         maxWindowSize = minWindowSize * (script.Count + 1);
 

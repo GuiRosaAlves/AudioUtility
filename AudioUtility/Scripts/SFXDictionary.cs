@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 //[CreateAssetMenu(fileName = "New Library", menuName = "Libraries/SFX Library", order = 0)]
-public class SFXLibrary
+public class SFXDictionary
 {
     public Queue<string> entriesBuffer;
     [SerializeField] protected List<SFX> library = new List<SFX>();
