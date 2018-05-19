@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-//[CreateAssetMenu(fileName = "New Library", menuName = "Libraries/SFX Library", order = 0)]
 public class SFXDictionary
 {
-    public Queue<string> entriesBuffer;
-    [SerializeField] protected List<SFX> library = new List<SFX>();
+    [SerializeField] protected List<SFX> library;
+    private AudioSource targetSource;
     public int Count { get { return library.Count; } }
+
+    public SFXDictionary()
+    {
+        library = new List<SFX>();
+        targetSource = null;
+    }
+    public SFXDictionary(AudioSource source)
+    {
+        library = new List<SFX>();
+        targetSource = source;
+    }
 
     public SFX Add()
     {
@@ -16,12 +26,14 @@ public class SFXDictionary
         library.Add(returnValue);
         return returnValue;
     }
+
     public SFX Add(string tag, AudioClip audio)
     {
         SFX returnValue = new SFX(tag, audio);
         library.Add(returnValue);
         return returnValue;
     }
+
     public SFX Get(string tag)
     {
         foreach (SFX sfx in library)
@@ -34,6 +46,7 @@ public class SFXDictionary
         Debug.Log("Sound Effect not found in the library!");
         return default(SFX);
     }
+
     public SFX Get(int index)
     {
         if (library.Count != 0 && index < library.Count)
@@ -46,6 +59,7 @@ public class SFXDictionary
         }
         return default(SFX);
     }
+
     public void Remove(string tag)
     {
         for (int i = 0; i < library.Count; i++)
@@ -58,6 +72,7 @@ public class SFXDictionary
         }
         Debug.Log("Sound Effect not found in the library!");
     }
+
     public void Remove(int index)
     {
         if (library.Count != 0 && index < library.Count)
@@ -69,6 +84,65 @@ public class SFXDictionary
             Debug.Log("Sound Effect not found in the library!");
         }
     }
+
+    public bool Play(string tag, ulong delay)
+    {
+        foreach (SFX sfx in library)
+        {
+            if (sfx.tag == tag)
+            {
+                targetSource.clip = sfx.audio;
+                targetSource.Play(delay);
+                return true;
+            }
+        }
+        Debug.Log("Sound Effect not found in the library!");
+        return false;
+    }
+
+    public bool Play(AudioSource source, string tag, ulong delay)
+    {
+        foreach (SFX sfx in library)
+        {
+            if (sfx.tag == tag)
+            {
+                source.clip = sfx.audio;
+                source.Play(delay);
+                return true;
+            }
+        }
+        Debug.Log("Sound Effect not found in the library!");
+        return false;
+    }
+
+    public bool PlayOneShot(string tag)
+    {
+        foreach (SFX sfx in library)
+        {
+            if (sfx.tag == tag)
+            {
+                targetSource.PlayOneShot(sfx.audio);
+                return true;
+            }
+        }
+        Debug.Log("Sound Effect not found in the library!");
+        return false;
+    }
+
+    public bool PlayOneShot(AudioSource source, string tag)
+    {
+        foreach (SFX sfx in library)
+        {
+            if (sfx.tag == tag)
+            {
+                source.PlayOneShot(sfx.audio);
+                return true;
+            }
+        }
+        Debug.Log("Sound Effect not found in the library!");
+        return false;
+    }
+
     public void Clear()
     {
         library.Clear();
